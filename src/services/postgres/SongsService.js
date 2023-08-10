@@ -52,7 +52,7 @@ class SongsService {
     if (!fetch.rows.length) {
       throw new NotFoundError('Lagu tidak ditemukan');
     }
-    return fetch.rows.map(mapSongDB)[0];
+    return mapSongDB(fetch.rows[0]);
   }
 
   async editSongById(id, {
