@@ -1,7 +1,7 @@
 const { nanoid } = require('nanoid');
 const { Pool } = require('pg');
 const InvariantError = require('../../exceptions/InvariantError');
-const { filterPerformerSongByParam, filterTitleSongByParam, mapSongDB } = require('../../utils');
+const { mapSongDB } = require('../../utils');
 const NotFoundError = require('../../exceptions/NotFoundError');
 
 class SongsService {
@@ -24,18 +24,13 @@ class SongsService {
     return fetch.rows[0].id;
   }
 
-  async getSongs(params) {
-    const query = { text: 'SELECT id, title, performer FROM songs' };
-    const fetch = await this._pool.query(query);
-    const songs = fetch.rows;
-    let filteredSong = songs;
-    if ('title' in params) {
-      filteredSong = filteredSong.filter((s) => filterTitleSongByParam(s, params.title));
-    }
-    if ('performer' in params) {
-      filteredSong = filteredSong.filter((s) => filterPerformerSongByParam(s, params.performer));
-    }
-    return filteredSong;
+  async getSongs(title = '', performer = '') {
+    const query = {
+      text: 'SELECT id, title, performer FROM songs WHERE title ILIKE $1 AND performer ILIKE $2',
+      values: [`%${title}%`, `%${performer}%`],
+    };
+    const { rows } = await this._pool.query(query);
+    return rows;
   }
 
   async getSongById(id) {
@@ -44,7 +39,7 @@ class SongsService {
       values: [id],
     };
     const fetch = await this._pool.query(query);
-    if (!fetch.rows.length) {
+    if (!fetch.rowCount) {
       throw new NotFoundError('Lagu tidak ditemukan');
     }
     return mapSongDB(fetch.rows[0]);

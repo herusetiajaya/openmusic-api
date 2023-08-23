@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 /* eslint-disable camelcase */
 const mapAlbumsDB = ({
   id,
@@ -19,10 +18,6 @@ const mapSongDB = ({
   duration,
   albumId,
   username,
-  name,
-  owner,
-  playlist_id,
-  song_id,
 }) => ({
   id,
   title,
@@ -32,13 +27,7 @@ const mapSongDB = ({
   duration,
   albumId,
   username,
-  name,
-  owner,
-  playlistId: playlist_id,
-  songId: song_id,
 });
-const filterTitleSongByParam = (song, title) => (song.title.toLowerCase().includes(title));
-const filterPerformerSongByParam = (song, performer) => (song.performer.toLowerCase().includes(performer));
 
 const mapPlaylistsDB = ({
   id,
@@ -69,8 +58,6 @@ const mapDBToModelPlaylistSongs = ({
 module.exports = {
   mapAlbumsDB,
   mapSongDB,
-  filterPerformerSongByParam,
-  filterTitleSongByParam,
   mapPlaylistsDB,
   mapDBToModelPlaylistSongs,
 };
