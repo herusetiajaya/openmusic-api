@@ -31,11 +31,11 @@ const PlaylistsSongsActivitiesService = require('./services/postgres/PlaylistsSo
 const PlaylistsValidator = require('./validator/playlists');
 
 const init = async () => {
-  const collaborationsService = new CollaborationsService();
   const albumsService = new AlbumsService();
   const songsService = new SongsService();
-  const usersService = new UsersService();
   const authenticationsService = new AuthenticationsService();
+  const usersService = new UsersService();
+  const collaborationsService = new CollaborationsService();
   const playlistsService = new PlaylistsService(collaborationsService);
   const playlistsongsService = new PlaylistsongsService();
   const playlistsSongsActivitiesService = new PlaylistsSongsActivitiesService();
