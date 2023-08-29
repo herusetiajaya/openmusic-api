@@ -39,11 +39,11 @@ class AlbumsService {
       text: 'SELECT id, name, year, cover_url FROM albums WHERE id = $1',
       values: [id],
     };
-    const resultAlbum = await this._pool.query(queryAlbum);
-    if (!resultAlbum.rowCount) {
+    const { rows, rowCount } = await this._pool.query(queryAlbum);
+    if (!rowCount) {
       throw new NotFoundError('Album tidak ditemukan');
     }
-    return resultAlbum.rows.map(mapAlbumsDB)[0];
+    return rows.map(mapAlbumsDB)[0];
   }
 
   async editAlbumById(id, { name, year }) {
